@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './models/namaz_times/namaz_times.dart';
 import 'package:intl/intl.dart';
 
+// ignore: must_be_immutable
 class DateWidget extends StatefulWidget {
   DateWidget({super.key, required this.data});
   NamazTimes data;

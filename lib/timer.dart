@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CountdownTimerDemo extends StatefulWidget {
-  CountdownTimerDemo({super.key, required this.duration});
+  CountdownTimerDemo({super.key, required this.duration, required this.left});
   Duration duration;
+  bool left;
   @override
   State<CountdownTimerDemo> createState() => _CountdownTimerDemoState();
 }
@@ -17,7 +19,7 @@ class _CountdownTimerDemoState extends State<CountdownTimerDemo> {
   void initState() {
     super.initState();
     countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
   }
 
   /// Timer related methods ///
@@ -40,20 +42,23 @@ class _CountdownTimerDemoState extends State<CountdownTimerDemo> {
 
   // Step 6
   void setCountDown() {
-    final reduceSecondsBy = 1;
-    setState(() {
-      final seconds = widget.duration.inSeconds - reduceSecondsBy;
-      if (seconds < 0) {
-        countdownTimer!.cancel();
-      } else {
-        widget.duration = Duration(seconds: seconds);
-      }
-    });
+    const reduceSecondsBy = 1;
+    if (mounted) {
+      setState(() {
+        final seconds = widget.duration.inSeconds - reduceSecondsBy;
+        if (seconds < 0) {
+          countdownTimer!.cancel();
+        } else {
+          widget.duration = Duration(seconds: seconds);
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    String strDigits(int n) => n.toString().padLeft(2, '0');
+    String strDigits(int n) => n.toString().padLeft(1, '0');
+    // ignore: unused_local_variable
     final days = strDigits(widget.duration.inDays);
     // Step 7
     final hours = strDigits(widget.duration.inHours.remainder(24));
@@ -61,11 +66,15 @@ class _CountdownTimerDemoState extends State<CountdownTimerDemo> {
     final seconds = strDigits(widget.duration.inSeconds.remainder(60));
     return Column(
       children: [
-        Text(
-          '$hours:$minutes:$seconds',
-          style: const TextStyle(
-              fontWeight: FontWeight.bold, color: Colors.black, fontSize: 18),
-        ),
+        widget.left
+            ? Text(
+                '$hours hour $minutes miniutes left',
+                style: const TextStyle(color: Colors.white, fontSize: 15),
+              )
+            : Text(
+                '$hours hour $minutes miniutes',
+                style: const TextStyle(color: Colors.white, fontSize: 15),
+              ),
         // SizedBox(height: 20),
         // // Step 9
         // ElevatedButton(

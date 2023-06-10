@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import 'package:provider/provider.dart';
-import 'package:geolocator/geolocator.dart';
+import '../models/namaz_times/namaz_times.dart';
+
+import '../models/namaz_times/namaz_times.dart';
 
 class MainProvider extends ChangeNotifier {
-  late Position _position;
+  late NamazTimes NamazTimedata;
+  int ind = int.parse(DateFormat.d().format(DateTime.now()).toString()) - 1;
 
-  // void setPosition() async {
-  //   _position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high);
-  //   print(_position.latitude);
-  //   print(_position.longitude);
-  // }
+  void SetNamazTimes(var jsonData) {
+    NamazTimedata = NamazTimes.fromJson(jsonData);
+    print('Data has been set');
+  }
 }

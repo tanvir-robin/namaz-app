@@ -9,8 +9,5 @@ class gpsInfo {
     if (status.isDenied) {
       await Permission.location.request();
     }
-    if (statusn.isDenied) {
-      await Permission.notification.request();
-    }
   }
 }
