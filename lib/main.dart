@@ -100,7 +100,7 @@ class _TestState extends State<Test> {
         final data1 = json.decode(res.body);
         data = NamazTimes.fromJson(data1);
         // ignore: use_build_context_synchronously
-        Provider.of<MainProvider>(context, listen: false).SetNamazTimes(data1);
+        //Provider.of<MainProvider>(context, listen: false).SetNamazTimes(data1);
         await getCity();
         db.setString('cacheData', res.body);
         db.setString('city', city);
@@ -279,7 +279,9 @@ class _TestState extends State<Test> {
                       },
                     );
                   } else if (activePage == 1) {
-                    return QuranSc();
+                    return QuranSc(
+                      namazTimes: data,
+                    );
                   }
                   return HadithScreen();
                 },

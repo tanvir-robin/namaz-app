@@ -11,9 +11,12 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: SpinKitThreeBounce(
-        color: Colors.blue,
+    return Container(
+      height: MediaQuery.sizeOf(context).height - 200,
+      child: const Center(
+        child: SpinKitThreeBounce(
+          color: Colors.blue,
+        ),
       ),
     );
   }

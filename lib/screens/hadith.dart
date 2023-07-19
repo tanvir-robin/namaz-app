@@ -1,3 +1,4 @@
+import 'package:challenge/screens/detailsHadith.dart';
 import 'package:challenge/widgtes/Loading.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -5,6 +6,7 @@ import 'dart:math' as math;
 
 import 'package:http/http.dart' as http;
 
+import '../models/hadith_catagory/catagorydatum.dart';
 import '../models/hadith_catagory/hadith_catagory.dart';
 
 class HadithScreen extends StatefulWidget {
@@ -279,7 +281,7 @@ class _HadithScreenState extends State<HadithScreen> {
             Container(
               width: 500,
               decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 240, 233, 233),
+                  color: const Color.fromARGB(255, 240, 233, 233),
                   borderRadius: BorderRadius.circular(12)),
               child: FutureBuilder(
                   future: loadCatagory(),
@@ -297,50 +299,15 @@ class _HadithScreenState extends State<HadithScreen> {
                           shrinkWrap: true,
                           itemCount: datas.length,
                           itemBuilder: (context, i) => Container(
-                                margin: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          alignment: Alignment.center,
-                                          width: 60,
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                              color: Color((math.Random()
-                                                              .nextDouble() *
-                                                          0xFFFFFF)
-                                                      .toInt())
-                                                  .withOpacity(1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          child: Text(
-                                            datas[i].title.toString()[0],
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 22),
-                                          ),
-                                        ),
-                                        Text(
-                                          datas[i].title.toString(),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 15),
-                                        ),
-                                        Text(
-                                            'Total Hadith: ${datas[i].hadeethsCount.toString()}'),
-                                      ]),
-                                ),
-                              ));
+                              margin: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white),
+                              child: GridTiles(
+                                datas: datas,
+                                i: i,
+                                lan: langcode[activeLan],
+                              )));
                     }
                     return ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
@@ -413,6 +380,59 @@ class LanguageIcon extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class GridTiles extends StatelessWidget {
+  const GridTiles(
+      {super.key, required this.datas, required this.i, required this.lan});
+  final List<Catagorydatum>? datas;
+  final int i;
+  final String lan;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => DetailsHadith(
+                    id: datas![i].id.toString(),
+                    lan: lan,
+                  )),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                    color:
+                        Color((math.Random().nextDouble() * 0xFFFFFF).toInt())
+                            .withOpacity(1.0),
+                    borderRadius: BorderRadius.circular(8)),
+                child: Text(
+                  datas![i].title.toString()[0],
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 22),
+                ),
+              ),
+              Text(
+                datas![i].title.toString(),
+                textAlign: TextAlign.center,
+                style:
+                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+              ),
+              Text('Total Hadith: ${datas![i].hadeethsCount.toString()}'),
+            ]),
+      ),
     );
   }
 }

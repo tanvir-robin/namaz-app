@@ -9,12 +9,14 @@ import 'package:provider/provider.dart';
 import 'FullSurah.dart';
 
 import '../models/quran_data/quran_data.dart';
+import '../models/namaz_times/namaz_times.dart';
 import '../models/quran_data/datum.dart';
 import '../provider/mainprovider.dart';
 
+// ignore: must_be_immutable
 class QuranSc extends StatefulWidget {
-  const QuranSc({super.key});
-
+  QuranSc({super.key, required this.namazTimes});
+  NamazTimes? namazTimes;
   @override
   State<QuranSc> createState() => _QuranScState();
 }
@@ -88,13 +90,9 @@ class _QuranScState extends State<QuranSc> {
   Widget build(BuildContext context) {
     final toppadding = MediaQuery.of(context).viewPadding.top;
     final dwidth = MediaQuery.of(context).size.width;
-    final arabicDateData = Provider.of<MainProvider>(context, listen: false)
-        .NamazTimedata
-        .data![ind]
-        .date!
-        .hijri!;
+    final arabicDateData = widget.namazTimes?.data?[ind].date!.hijri!;
     final arabicDate =
-        '${arabicDateData.day} ${arabicDateData.month!.en}, ${arabicDateData.year} AD';
+        '${arabicDateData?.day} ${arabicDateData?.month!.en}, ${arabicDateData?.year} AD';
     return Padding(
       padding: EdgeInsets.only(top: toppadding),
       child: SingleChildScrollView(
